@@ -17,11 +17,14 @@ export const JobsPage = () => {
   const positionHubConn = useSignalR(POSITION_HUB.NAME);
   const navigate = useNavigate();
 
-  const getJobPositions = () => {
-    fetchJobPositions().then((data) => setPositions([...data]));
+  const getJobPositions = async () => {
+    const positions = await fetchJobPositions();
+    setPositions([...positions]);
   };
 
-  useEffect(getJobPositions, []);
+  useEffect(() => {
+    getJobPositions();
+  }, []);
   useEffect(() => {
     positionHubConn.on(POSITION_HUB.MESSAGE.REFRESH_DATA, getJobPositions);
     return () => {
