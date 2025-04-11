@@ -1,7 +1,7 @@
 interface BaseJobPosition {
   id: number;
   title: string;
-  number: string;
+  number: number;
   budget: number;
 }
 export interface JobPositionDto extends BaseJobPosition {
