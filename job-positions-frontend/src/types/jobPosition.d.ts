@@ -11,7 +11,7 @@ export interface JobPositionDto {
 export interface JobPosition {
   id: number;
   title: string;
-  number: string;
+  number: number;
   budget: number;
   departmentId: number;
   recruiterId: number;
