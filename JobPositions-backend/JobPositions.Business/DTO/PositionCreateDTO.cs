@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace JobPositions.Business.DTO
 {
@@ -10,6 +9,7 @@ namespace JobPositions.Business.DTO
         public int StatusId { get; set; }
         public int DepartmentId { get; set; }
         public int RecruiterId { get; set; }
+
         [Range(0.01, double.MaxValue, ErrorMessage = "Budget must be greater than 0.")]
         public decimal Budget { get; set; }
     }

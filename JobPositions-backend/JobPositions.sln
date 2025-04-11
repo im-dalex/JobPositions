@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobPositions.Data", "JobPos
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobPositions.Business", "JobPositions.Business\JobPositions.Business.csproj", "{91E15F4E-D6D4-49A1-AA33-EC8BF927EBA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobPositions.Test", "JobPositions.Test\JobPositions.Test.csproj", "{F6E48C4D-F573-43DF-82A9-848D43FF3FF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{91E15F4E-D6D4-49A1-AA33-EC8BF927EBA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91E15F4E-D6D4-49A1-AA33-EC8BF927EBA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91E15F4E-D6D4-49A1-AA33-EC8BF927EBA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6E48C4D-F573-43DF-82A9-848D43FF3FF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6E48C4D-F573-43DF-82A9-848D43FF3FF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6E48C4D-F573-43DF-82A9-848D43FF3FF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6E48C4D-F573-43DF-82A9-848D43FF3FF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

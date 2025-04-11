@@ -1,21 +1,26 @@
-﻿using JobPositions.Business.Abstract;
+﻿using System.ComponentModel.DataAnnotations;
+using JobPositions.Business.Abstract;
 using JobPositions.Business.DTO;
 using JobPositions.Data.Base;
 using JobPositions.Data.Entities;
 using LinqKit;
-using System.ComponentModel.DataAnnotations;
 
 namespace JobPositions.Business.Services
 {
     public class PositionService : IPositionService
     {
         private readonly IBaseRepository<Position> positionRepository;
+
         public PositionService(IBaseRepository<Position> positionRepository)
         {
             this.positionRepository = positionRepository;
         }
 
-        public async Task<IEnumerable<PositionDTO>> GetAll(string? positionTitle,int? statusId, int? departmentId)
+        public async Task<IEnumerable<PositionDTO>> GetAll(
+            string? positionTitle,
+            int? statusId,
+            int? departmentId
+        )
         {
             var predicate = PredicateBuilder.New<Position>(true);
 
@@ -35,17 +40,18 @@ namespace JobPositions.Business.Services
                 predicate = predicate.And(p => p.Title.ToLower().Contains(title));
             }
 
-            var positions = await positionRepository.GetAllAsync(x => 
-                x.Select(p => new PositionDTO
-                {
-                    Id = p.Id,
-                    Title = p.Title,
-                    Number = p.Number,
-                    Budget = p.Budget,
-                    Department = p.Department.Name,
-                    RecruiterName = p.Recruiter.FullName,
-                    Status = p.Status.Description
-                }),
+            var positions = await positionRepository.GetAllAsync(
+                x =>
+                    x.Select(p => new PositionDTO
+                    {
+                        Id = p.Id,
+                        Title = p.Title,
+                        Number = p.Number,
+                        Budget = p.Budget,
+                        Department = p.Department.Name,
+                        RecruiterName = p.Recruiter.FullName,
+                        Status = p.Status.Description,
+                    }),
                 predicate
             );
             return positions;
@@ -53,16 +59,20 @@ namespace JobPositions.Business.Services
 
         public async Task<PositionDTO> GetPositionById(int positionId)
         {
-            var position = await positionRepository.GetAsync(x => x.Select(position => new PositionDTO
-            {
-                Id = positionId,
-                Number = position.Number,
-                Title = position.Title,
-                Budget = position.Budget,
-                DepartmentId = position.DepartmentId,
-                StatusId = position.StatusId,
-                RecruiterId = position.RecruiterId
-            }), x => x.Id == positionId);
+            var position = await positionRepository.GetAsync(
+                x =>
+                    x.Select(position => new PositionDTO
+                    {
+                        Id = positionId,
+                        Number = position.Number,
+                        Title = position.Title,
+                        Budget = position.Budget,
+                        DepartmentId = position.DepartmentId,
+                        StatusId = position.StatusId,
+                        RecruiterId = position.RecruiterId,
+                    }),
+                x => x.Id == positionId
+            );
 
             if (position == null)
             {
@@ -91,7 +101,6 @@ namespace JobPositions.Business.Services
 
         public async Task UpdatePostion(int positionId, PositionCreateDTO positionDto)
         {
-
             var existingPosition = await ValidatePositionExists(positionId);
 
             await ValidatePositionNumber(positionDto.Number, positionId);
@@ -136,7 +145,9 @@ namespace JobPositions.Business.Services
             var conflictPosition = await positionRepository.GetAsync(predicate);
             if (conflictPosition != null)
             {
-                throw new ValidationException($"The position number is already in use by the position {conflictPosition.Title}.");
+                throw new ValidationException(
+                    $"The position number is already in use by the position {conflictPosition.Title}."
+                );
             }
         }
     }
