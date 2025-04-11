@@ -1,5 +1,4 @@
-﻿
-using JobPositions.Data.Base;
+﻿using JobPositions.Data.Base;
 using JobPositions.Data.Seeds.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +10,8 @@ namespace JobPositions.Data.Seeds
         {
             new DepartmentSeed(),
             new PositionStatusSeed(),
-            new RecruiterSeed()
+            new RecruiterSeed(),
+            new PositionSeed(),
         };
 
         public static void Run(ModelBuilder modelBuilder)

@@ -8,10 +8,12 @@ namespace JobPositions.Data.Seeds.Entities
     {
         public void Execute(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PositionStatus>().HasData(
-                new PositionStatus { Id = 1, Description = "Open" },
-                new PositionStatus { Id = 2, Description = "Closed" }
-            );
+            modelBuilder
+                .Entity<PositionStatus>()
+                .HasData(
+                    new PositionStatus { Id = 1, Description = "Open" },
+                    new PositionStatus { Id = 2, Description = "Closed" }
+                );
         }
     }
 }

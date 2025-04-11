@@ -8,10 +8,12 @@ namespace JobPositions.Data.Seeds.Entities
     {
         public void Execute(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Department>().HasData(
-                new Department { Id = 1, Name = "IT" },
-                new Department { Id = 2, Name = "HR" }
-            );
+            modelBuilder
+                .Entity<Department>()
+                .HasData(
+                    new Department { Id = 1, Name = "IT" },
+                    new Department { Id = 2, Name = "HR" }
+                );
         }
     }
 }
