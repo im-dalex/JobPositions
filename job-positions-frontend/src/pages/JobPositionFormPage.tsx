@@ -58,7 +58,6 @@ export const JobPositionPage = () => {
 
   const fetchJobPosition = async (positionId: number) => {
     const position = await fetchJobPositionById(positionId);
-    console.log(position);
     if (!position) return;
 
     form.reset({
@@ -70,7 +69,6 @@ export const JobPositionPage = () => {
       recruiterId: String(position.recruiterId),
     });
     form.setValue("departmentId", String(position.recruiterId));
-    console.log(form.getValues());
   };
 
   useEffect(() => {
