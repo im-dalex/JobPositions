@@ -6,15 +6,28 @@ import type { JobPositionDto } from "@/types/jobPosition";
 import {
   fetchJobPositions,
   deleteJobPosition as _deleteJobPosition,
-} from "@/api/jobPosition";
+} from "@/api/http/jobPosition";
+import { useSignalR } from "@/hooks/useSignalR";
+import { HUBS } from "@/api/signalr/connection";
+
+const POSITION_HUB = HUBS.POSITION;
 
 export const JobsPage = () => {
   const [positions, setPositions] = useState<JobPositionDto[]>([]);
+  const positionHubConn = useSignalR(POSITION_HUB.NAME);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const getJobPositions = () => {
     fetchJobPositions().then((data) => setPositions([...data]));
-  }, []);
+  };
+
+  useEffect(getJobPositions, []);
+  useEffect(() => {
+    positionHubConn.on(POSITION_HUB.MESSAGE.REFRESH_DATA, getJobPositions);
+    return () => {
+      positionHubConn.off(POSITION_HUB.MESSAGE.REFRESH_DATA);
+    };
+  }, [positionHubConn]);
 
   const deleteJobPosition = async (id: number) => {
     await _deleteJobPosition(id);
