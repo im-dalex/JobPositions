@@ -4,6 +4,7 @@ namespace JobPositions.Business.DTO
 {
     public class PositionCreateDTO
     {
+        [Required]
         public int Number { get; set; }
         public required string Title { get; set; }
         public int StatusId { get; set; }

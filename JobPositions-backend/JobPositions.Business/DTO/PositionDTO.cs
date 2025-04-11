@@ -1,5 +1,4 @@
-﻿
-namespace JobPositions.Business.DTO
+﻿namespace JobPositions.Business.DTO
 {
     public class PositionDTO
     {
