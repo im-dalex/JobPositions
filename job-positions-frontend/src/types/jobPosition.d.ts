@@ -8,7 +8,8 @@ export interface JobPositionDto {
   status: string;
 }
 
-export interface JobPositionCreateDto {
+export interface JobPosition {
+  id: number;
   title: string;
   number: string;
   budget: number;
@@ -16,3 +17,13 @@ export interface JobPositionCreateDto {
   recruiterId: number;
   statusId: number;
 }
+
+export type JobPositionCreateDto = Omit<JobPosition, "id">;
+// {
+//   title: string;
+//   number: string;
+//   budget: number;
+//   departmentId: number;
+//   recruiterId: number;
+//   statusId: number;
+// }
