@@ -12,14 +12,22 @@ namespace JobPositions.Api.Controllers
     {
         private readonly IPositionService _positionService;
         private readonly IHubContext<PositionHub> _positionHub;
-        public PositionController(IPositionService positionService, IHubContext<PositionHub> positionHub)
+
+        public PositionController(
+            IPositionService positionService,
+            IHubContext<PositionHub> positionHub
+        )
         {
             _positionService = positionService;
             _positionHub = positionHub;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(string? positionTitle, int? statusId, int? departmentId)
+        public async Task<IActionResult> Get(
+            string? positionTitle,
+            int? statusId,
+            int? departmentId
+        )
         {
             var result = await _positionService.GetAll(positionTitle, statusId, departmentId);
             return Ok(result);
@@ -34,8 +42,9 @@ namespace JobPositions.Api.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PositionCreateDTO position)
-        { 
+        {
             await _positionService.CreatePostion(position);
+            await _positionHub.Clients.All.SendAsync("RefreshData");
             return Ok(position);
         }
 
@@ -43,6 +52,7 @@ namespace JobPositions.Api.Controllers
         public async Task<IActionResult> Put(int id, [FromBody] PositionCreateDTO position)
         {
             await _positionService.UpdatePostion(id, position);
+            await _positionHub.Clients.All.SendAsync("RefreshData");
             return Ok();
         }
 
@@ -50,6 +60,7 @@ namespace JobPositions.Api.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _positionService.DeletePosition(id);
+            await _positionHub.Clients.All.SendAsync("RefreshData");
             return NoContent();
         }
     }
