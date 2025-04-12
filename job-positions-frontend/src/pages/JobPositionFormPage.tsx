@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
-  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -25,9 +24,15 @@ import {
   editJobPosition,
   fetchJobPositionById,
 } from "@/api/http/jobPosition";
-import { useEffect } from "react";
-import { JobPositionCreateDto } from "@/types/jobPosition";
-import { AxiosError } from "axios";
+import { useEffect, useState } from "react";
+import type { JobPositionCreateDto } from "@/types/jobPosition";
+import type { AxiosError } from "axios";
+import type { keyValueDto } from "@/types/keyValue";
+import {
+  fetchDepartments,
+  fetchPositionStatuses,
+  fetchRecruiters,
+} from "@/api/http/miscellaneous";
 
 const FormSchema = z.object({
   title: z
@@ -50,11 +55,31 @@ const FormSchema = z.object({
 
 type PositionFormType = z.infer<typeof FormSchema>;
 
+type FormOptions = Record<
+  "statuses" | "recruiters" | "departments",
+  keyValueDto[]
+>;
+
 const JobPositionPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [options, setOptions] = useState<FormOptions>({
+    statuses: [],
+    recruiters: [],
+    departments: [],
+  });
 
   const goBack = () => navigate(-1);
+
+  const fetchFormOptions = async () => {
+    const [departments, statuses, recruiters] = await Promise.all([
+      fetchDepartments(),
+      fetchPositionStatuses(),
+      fetchRecruiters(),
+    ]);
+
+    setOptions({ departments, statuses, recruiters });
+  };
 
   const fetchJobPosition = async (positionId: number) => {
     const position = await fetchJobPositionById(positionId);
@@ -71,6 +96,7 @@ const JobPositionPage = () => {
   };
 
   useEffect(() => {
+    fetchFormOptions();
     if (!id) return;
     fetchJobPosition(Number(id));
   }, [id]);
@@ -177,17 +203,14 @@ const JobPositionPage = () => {
             name="departmentId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Department {field.value}</FormLabel>
+                <FormLabel>Department</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a Department" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="1">IT</SelectItem>
-                    <SelectItem value="2">HR</SelectItem>
-                  </SelectContent>
+                  <SelectContent optionItems={options.departments} />
                 </Select>
                 <FormMessage />
               </FormItem>
@@ -205,10 +228,7 @@ const JobPositionPage = () => {
                       <SelectValue placeholder="Select a Status" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="1">Open</SelectItem>
-                    <SelectItem value="2">Closed</SelectItem>
-                  </SelectContent>
+                  <SelectContent optionItems={options.statuses} />
                 </Select>
                 <FormMessage />
               </FormItem>
@@ -226,10 +246,7 @@ const JobPositionPage = () => {
                       <SelectValue placeholder="Select a Recruiter" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="1">Veronica Arias</SelectItem>
-                    <SelectItem value="2">Adrian Carmona</SelectItem>
-                  </SelectContent>
+                  <SelectContent optionItems={options.recruiters} />
                 </Select>
                 <FormMessage />
               </FormItem>
