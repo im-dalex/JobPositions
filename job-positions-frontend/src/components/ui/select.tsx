@@ -3,6 +3,7 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { keyValueDto } from "@/types/keyValue";
 
 function Select({
   ...props
@@ -42,18 +43,25 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50" />
+        <ChevronDownIcon className="opacity-50 size-4" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
 }
 
+type SelectContentProps = React.ComponentProps<
+  typeof SelectPrimitive.Content
+> & {
+  optionItems?: keyValueDto[];
+};
+
 function SelectContent({
   className,
   children,
   position = "popper",
+  optionItems,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Content>) {
+}: SelectContentProps) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -75,6 +83,13 @@ function SelectContent({
               "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1"
           )}
         >
+          {optionItems?.length &&
+            optionItems.map((item) => (
+              <SelectItem key={item.id} value={String(item.id)}>
+                {item.name}
+              </SelectItem>
+            ))}
+
           {children}
         </SelectPrimitive.Viewport>
         <SelectScrollDownButton />
