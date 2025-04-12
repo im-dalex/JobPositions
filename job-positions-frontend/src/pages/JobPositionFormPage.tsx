@@ -72,13 +72,14 @@ const JobPositionPage = () => {
   const goBack = () => navigate(-1);
 
   const fetchFormOptions = async () => {
+    const toastId = toast.loading("Fetching options...");
     const [departments, statuses, recruiters] = await Promise.all([
       fetchDepartments(),
       fetchPositionStatuses(),
       fetchRecruiters(),
     ]);
-
     setOptions({ departments, statuses, recruiters });
+    toast.dismiss(toastId);
   };
 
   const fetchJobPosition = async (positionId: number) => {
@@ -96,9 +97,10 @@ const JobPositionPage = () => {
   };
 
   useEffect(() => {
-    fetchFormOptions();
-    if (!id) return;
-    fetchJobPosition(Number(id));
+    fetchFormOptions().then(() => {
+      if (!id) return;
+      fetchJobPosition(Number(id));
+    });
   }, [id]);
 
   const form = useForm<PositionFormType>({
@@ -123,18 +125,13 @@ const JobPositionPage = () => {
       } else {
         await createJobPosition(model);
       }
-      toast.success(`Job position was submitted successfully`, {
-        position: "top-right",
-        richColors: true,
-      });
+      toast.success("Job position was submitted successfully");
       goBack();
     } catch (error) {
       const { response } = error as AxiosError;
       const { message } = response?.data as Record<string, string>;
-      toast.error(`Error submitting the job position`, {
-        position: "top-right",
+      toast.error("Error submitting the job position", {
         description: message,
-        richColors: true,
       });
     }
   };
@@ -253,7 +250,7 @@ const JobPositionPage = () => {
             )}
           />
           <div className="flex justify-between col-span-2">
-            <Button variant="secondary" onClick={goBack}>
+            <Button type="button" variant="secondary" onClick={goBack}>
               Cancel
             </Button>
             <Button type="submit">Submit</Button>

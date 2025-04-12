@@ -10,6 +10,7 @@ import {
 import { useSignalR } from "@/hooks/useSignalR";
 import { HUBS } from "@/api/signalr/connection";
 import JobsFilter, { JobsFilterHandle } from "@/components/JobsFilter";
+import { toast } from "sonner";
 
 const POSITION_HUB = HUBS.POSITION;
 
@@ -24,8 +25,10 @@ const JobsPage = () => {
     departmentId?: number,
     statusId?: number
   ) => {
+    const toastId = toast.loading("Fetching positions...");
     const positions = await fetchJobPositions(title, departmentId, statusId);
     setPositions([...positions]);
+    toast.dismiss(toastId);
   };
 
   useEffect(() => {
