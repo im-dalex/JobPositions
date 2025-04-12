@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { JobsList } from "@/components/JobsList";
@@ -9,16 +9,22 @@ import {
 } from "@/api/http/jobPosition";
 import { useSignalR } from "@/hooks/useSignalR";
 import { HUBS } from "@/api/signalr/connection";
+import JobsFilter, { JobsFilterHandle } from "@/components/JobsFilter";
 
 const POSITION_HUB = HUBS.POSITION;
 
-export const JobsPage = () => {
+const JobsPage = () => {
   const [positions, setPositions] = useState<JobPositionDto[]>([]);
+  const filtersRef = useRef<JobsFilterHandle>(null);
   const positionHubConn = useSignalR(POSITION_HUB.NAME);
   const navigate = useNavigate();
 
-  const getJobPositions = async () => {
-    const positions = await fetchJobPositions();
+  const getJobPositions = async (
+    title?: string,
+    departmentId?: number,
+    statusId?: number
+  ) => {
+    const positions = await fetchJobPositions(title, departmentId, statusId);
     setPositions([...positions]);
   };
 
@@ -26,7 +32,10 @@ export const JobsPage = () => {
     getJobPositions();
   }, []);
   useEffect(() => {
-    positionHubConn.on(POSITION_HUB.MESSAGE.REFRESH_DATA, getJobPositions);
+    positionHubConn.on(POSITION_HUB.MESSAGE.REFRESH_DATA, () => {
+      filtersRef.current?.resetFilters();
+      getJobPositions();
+    });
     return () => {
       positionHubConn.off(POSITION_HUB.MESSAGE.REFRESH_DATA);
     };
@@ -44,8 +53,9 @@ export const JobsPage = () => {
 
   return (
     <>
-      <div className="flex">
-        <Button onClick={() => openPositionForm()}>Create</Button>
+      <div className="flex justify-between mb-4">
+        <JobsFilter onSearch={getJobPositions} />
+        <Button onClick={() => openPositionForm()}>Create Job Position</Button>
       </div>
       <JobsList
         positions={positions}

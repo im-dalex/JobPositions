@@ -11,8 +11,8 @@ const api = axios.create({
 
 export const fetchJobPositions = (
   positionTitle?: string,
-  statusId?: number,
-  departmentId?: number
+  departmentId?: number,
+  statusId?: number
 ): Promise<JobPositionDto[]> =>
   api
     .get<JobPositionDto[]>("/Position", {
