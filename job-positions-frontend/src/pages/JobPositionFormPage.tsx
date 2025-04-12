@@ -68,7 +68,6 @@ export const JobPositionPage = () => {
       statusId: String(position.statusId),
       recruiterId: String(position.recruiterId),
     });
-    form.setValue("departmentId", String(position.recruiterId));
   };
 
   useEffect(() => {
