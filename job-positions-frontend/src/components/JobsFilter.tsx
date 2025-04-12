@@ -1,17 +1,16 @@
-import { forwardRef, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { z } from "zod";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
+import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "./ui/form";
+import type { keyValueDto } from "@/types/keyValue";
+import {
+  fetchDepartments,
+  fetchPositionStatuses,
+} from "@/api/http/miscellaneous";
 
 export interface JobsFilterHandle {
   resetFilters: () => void;
@@ -29,8 +28,28 @@ const FilterSchema = z.object({
 
 type FiltersModel = z.infer<typeof FilterSchema>;
 
+type FiltersOptions = Record<"statuses" | "departments", keyValueDto[]>;
+
 const JobsFilter = forwardRef<JobsFilterHandle, JobsFilterProps>(
   ({ onSearch }, ref) => {
+    const [options, setOptions] = useState<FiltersOptions>({
+      statuses: [],
+      departments: [],
+    });
+
+    const fetchFormOptions = async () => {
+      const [departments, statuses] = await Promise.all([
+        fetchDepartments(),
+        fetchPositionStatuses(),
+      ]);
+
+      setOptions({ departments, statuses });
+    };
+
+    useEffect(() => {
+      fetchFormOptions();
+    }, []);
+
     const form = useForm<FiltersModel>({
       resolver: zodResolver(FilterSchema),
       defaultValues: { title: "" },
@@ -80,10 +99,7 @@ const JobsFilter = forwardRef<JobsFilterHandle, JobsFilterProps>(
                       <SelectValue placeholder="Department" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="1">IT</SelectItem>
-                    <SelectItem value="2">HR</SelectItem>
-                  </SelectContent>
+                  <SelectContent optionItems={options.departments} />
                 </Select>
               </FormItem>
             )}
@@ -100,10 +116,7 @@ const JobsFilter = forwardRef<JobsFilterHandle, JobsFilterProps>(
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="1">Open</SelectItem>
-                    <SelectItem value="2">Closed</SelectItem>
-                  </SelectContent>
+                  <SelectContent optionItems={options.statuses} />
                 </Select>
               </FormItem>
             )}
