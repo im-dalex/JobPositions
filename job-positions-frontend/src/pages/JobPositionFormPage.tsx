@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -50,7 +50,7 @@ const FormSchema = z.object({
 
 type PositionFormType = z.infer<typeof FormSchema>;
 
-export const JobPositionPage = () => {
+const JobPositionPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -117,7 +117,6 @@ export const JobPositionPage = () => {
 
   return (
     <>
-      <Toaster expand visibleToasts={9} />
       <h2 className="mb-5 text-2xl">{titleVerb} Position</h2>
       <Form {...form}>
         <form
@@ -247,3 +246,5 @@ export const JobPositionPage = () => {
     </>
   );
 };
+
+export default JobPositionPage;

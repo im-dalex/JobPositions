@@ -16,7 +16,6 @@ const startConnectionWithRetry = async (connection: HubConnection) => {
 
   try {
     if (connection.state == "Disconnected") {
-      console.log("connect");
       return connection.start();
     }
   } catch (error) {
@@ -28,18 +27,6 @@ export const useSignalR = (hubUrl: string) => {
 
   useEffect(() => {
     startConnectionWithRetry(connection);
-    // const startConnection = async () => {
-    //   console.log("start", connection.state);
-    //   try {
-    //     // if (connection.state == "Disconnected") {
-    //     //   console.log("connect");
-    //     //   await connection.start();
-    //     // }
-    //   } catch (error) {
-    //     console.error("SignalR Connection Error: ", error);
-    //   }
-    // };
-    // startConnection();
     return () => {
       connection.stop().catch((err) => {
         console.warn("Error stopping SignalR connection:", err);

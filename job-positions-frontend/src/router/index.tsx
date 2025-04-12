@@ -1,5 +1,5 @@
-import { JobPositionPage } from "@/pages/JobPositionFormPage";
-import { JobsPage } from "@/pages/JobsPage";
+import JobPositionPage from "@/pages/JobPositionFormPage";
+import JobsPage from "@/pages/JobsPage";
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 
 const routes: RouteObject[] = [
