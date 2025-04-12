@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { useSignalR } from "@/hooks/useSignalR";
+import { HUBS } from "@/api/signalr/connection";
 import { Button } from "@/components/ui/button";
 import { JobsList } from "@/components/JobsList";
+import JobsFilter, { type JobsFilterHandle } from "@/components/JobsFilter";
 import type { JobPositionDto } from "@/types/jobPosition";
 import {
   fetchJobPositions,
   deleteJobPosition as _deleteJobPosition,
 } from "@/api/http/jobPosition";
-import { useSignalR } from "@/hooks/useSignalR";
-import { HUBS } from "@/api/signalr/connection";
-import JobsFilter, { JobsFilterHandle } from "@/components/JobsFilter";
-import { toast } from "sonner";
 
 const POSITION_HUB = HUBS.POSITION;
 

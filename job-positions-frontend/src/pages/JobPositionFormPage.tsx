@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,15 +25,14 @@ import {
   editJobPosition,
   fetchJobPositionById,
 } from "@/api/http/jobPosition";
-import { useEffect, useState } from "react";
-import type { JobPositionCreateDto } from "@/types/jobPosition";
-import type { AxiosError } from "axios";
-import type { keyValueDto } from "@/types/keyValue";
 import {
   fetchDepartments,
   fetchPositionStatuses,
   fetchRecruiters,
 } from "@/api/http/miscellaneous";
+import type { JobPositionCreateDto } from "@/types/jobPosition";
+import type { AxiosError } from "axios";
+import type { keyValueDto } from "@/types/keyValue";
 
 const FormSchema = z.object({
   title: z
