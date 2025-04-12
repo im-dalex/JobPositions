@@ -1,6 +1,7 @@
 using JobPositions.Business.Abstract;
 using JobPositions.Business.Services;
 using JobPositions.Data;
+using JobPositions.Data.Abstract;
 using JobPositions.Data.Base;
 using JobPositions.Hubs;
 using JobPositions.Middlewares;

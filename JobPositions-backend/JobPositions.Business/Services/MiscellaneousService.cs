@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using JobPositions.Business.Abstract;
+﻿using JobPositions.Business.Abstract;
 using JobPositions.Business.DTO;
-using JobPositions.Data.Base;
+using JobPositions.Data.Abstract;
 using JobPositions.Data.Entities;
 
 namespace JobPositions.Business.Services

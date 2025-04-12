@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using JobPositions.Business.Abstract;
 using JobPositions.Business.DTO;
-using JobPositions.Data.Base;
+using JobPositions.Data.Abstract;
 using JobPositions.Data.Entities;
 using LinqKit;
 

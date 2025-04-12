@@ -1,4 +1,4 @@
-﻿using JobPositions.Data.Base;
+﻿using JobPositions.Data.Abstract;
 using JobPositions.Data.Seeds.Entities;
 using Microsoft.EntityFrameworkCore;
 

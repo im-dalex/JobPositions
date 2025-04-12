@@ -4,7 +4,7 @@ using AutoFixture;
 using AutoFixture.AutoMoq;
 using JobPositions.Business.DTO;
 using JobPositions.Business.Services;
-using JobPositions.Data.Base;
+using JobPositions.Data.Abstract;
 using JobPositions.Data.Entities;
 using Moq;
 

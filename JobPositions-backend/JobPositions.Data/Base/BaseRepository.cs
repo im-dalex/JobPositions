@@ -1,26 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
+using JobPositions.Data.Abstract;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobPositions.Data.Base
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity>
+        where TEntity : class, new()
     {
         private readonly ApplicationDbContext _context;
         private readonly DbSet<TEntity> _dbSet;
 
         public BaseRepository(ApplicationDbContext context)
         {
-
             _context = context;
             _dbSet = _context.Set<TEntity>();
         }
 
-        public virtual async Task<IEnumerable<TResult>> GetAllAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> transform, Expression<Func<TEntity, bool>>? filter = null)
+        public virtual async Task<IEnumerable<TResult>> GetAllAsync<TResult>(
+            Func<IQueryable<TEntity>, IQueryable<TResult>> transform,
+            Expression<Func<TEntity, bool>>? filter = null
+        )
         {
             var query = _dbSet.AsNoTracking();
 
@@ -34,14 +33,6 @@ namespace JobPositions.Data.Base
             return await resultQuery.ToListAsync();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter)
-        {
-            var query = _dbSet.AsNoTracking().Where(filter);
-
-            return await query.ToListAsync();
-        }
-
-
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             var query = _dbSet.AsNoTracking();
@@ -49,7 +40,10 @@ namespace JobPositions.Data.Base
             return await query.ToListAsync();
         }
 
-        public virtual async Task<TResult?> GetAsync<TResult>(Func<IQueryable<TEntity>, IQueryable<TResult>> transform, Expression<Func<TEntity, bool>>? filter = null)
+        public virtual async Task<TResult?> GetAsync<TResult>(
+            Func<IQueryable<TEntity>, IQueryable<TResult>> transform,
+            Expression<Func<TEntity, bool>>? filter = null
+        )
         {
             var query = _dbSet.AsNoTracking();
 
@@ -79,7 +73,6 @@ namespace JobPositions.Data.Base
 
         public virtual async Task<TEntity> UpdateAsync(TEntity entity)
         {
-
             _dbSet.Attach(entity);
             _context.Entry<TEntity>(entity).State = EntityState.Modified;
 
