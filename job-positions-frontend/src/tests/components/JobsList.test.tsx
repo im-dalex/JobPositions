@@ -16,8 +16,8 @@ describe("JobsList", () => {
     const editButtons = screen.getAllByText("Edit");
     const deleteButtons = screen.getAllByText("Delete");
 
-    expect(screen.getByText("Frontend Developer")).toBeInTheDocument();
-    expect(screen.getByText("Backend Developer")).toBeInTheDocument();
+    expect(screen.getByText(mockPositions[0].number)).toBeInTheDocument();
+    expect(screen.getByText(mockPositions[1].number)).toBeInTheDocument();
     expect(editButtons.length).toBe(2);
     expect(deleteButtons.length).toBe(2);
   });
