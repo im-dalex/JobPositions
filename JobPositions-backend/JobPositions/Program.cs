@@ -14,6 +14,7 @@ builder.Services.AddControllers();
 #region BL and Data Services
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IPositionService, PositionService>();
+builder.Services.AddScoped<IMiscellaneousService, MiscellaneousService>();
 #endregion
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
