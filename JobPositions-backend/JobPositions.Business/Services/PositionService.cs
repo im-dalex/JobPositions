@@ -51,7 +51,7 @@ namespace JobPositions.Business.Services
                         Department = p.Department.Name,
                         RecruiterName = p.Recruiter.FullName,
                         Status = p.Status.Description,
-                    }),
+                    }).OrderByDescending(p => p.Id),
                 predicate
             );
             return positions;
