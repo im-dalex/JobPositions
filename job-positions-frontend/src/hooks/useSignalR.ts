@@ -1,12 +1,7 @@
 import { createHubConnection } from "@/api/signalr/connection";
+import { delay } from "@/lib/utils";
 import { HubConnection } from "@microsoft/signalr";
 import { useEffect, useMemo } from "react";
-
-const delay = (n: number) => {
-  return new Promise<void>((resolve) => {
-    setTimeout(() => resolve(), n);
-  });
-};
 
 const startConnectionWithRetry = async (connection: HubConnection) => {
   if (connection.state == "Disconnecting") {
